@@ -1,31 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import { Post } from './interfaces/post';
+import { PrismaService } from 'src/prisma/prisma.service';
+import { Post } from '@prisma/client';
 
 @Injectable()
 export class PostService {
-  private posts: Post[] = [
-    {
-      id: 1,
-      title: 'Heelo',
-      description: 'Jello',
-      createdAt: Date.now(),
-      upVote: 0,
-    },
-    {
-      id: 2,
-      title: 'Hello 2',
-      description: 'Hello 2',
-      createdAt: Date.now(),
-      upVote: 0,
-    },
-  ];
+  constructor(private prismaService: PrismaService) {}
 
   async findAllPosts(): Promise<Post[]> {
-    return this.posts;
+    return await this.prismaService.post.findMany();
   }
 
   async findPostById(id: number): Promise<Post> {
-    const post = this.posts.find((p) => p.id === id);
+    const post = this.prismaService.post.findUnique({ where: { id } });
     if (!post) {
       throw new Error('Post not found!');
     }
@@ -33,23 +19,23 @@ export class PostService {
   }
 
   async createPost(newPost: Post): Promise<void> {
-    newPost.id = this.posts.length + 1;
     newPost.upVote = 0;
-    newPost.createdAt = Date.now();
-    await this.posts.push(newPost);
+    newPost.createdAt = new Date(Date.now());
+    await this.prismaService.post.create({ data: newPost });
   }
 
   async updatePost(id: number, post: Post): Promise<Post> {
-    const currentPost = await this.posts.find((p) => p.id === id);
+    const currentPost = await this.prismaService.post.update({
+      where: { id },
+      data: post,
+    });
     if (!currentPost) {
       throw new Error('Post not found!');
     }
-    currentPost.title = post.title;
-    currentPost.description = post.description;
     return currentPost;
   }
 
   async deletePost(id: number): Promise<void> {
-    this.posts = this.posts.filter((p) => p.id !== id);
+    await this.prismaService.post.delete({ where: { id } });
   }
 }

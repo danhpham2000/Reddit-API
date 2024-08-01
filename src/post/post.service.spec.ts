@@ -15,4 +15,8 @@ describe('PostService', () => {
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
+
+  describe('findAllPosts', () => {
+    it('should return posts', () => {});
+  });
 });
