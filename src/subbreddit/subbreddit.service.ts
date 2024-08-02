@@ -20,5 +20,5 @@ export class SubbredditService {
     return subbreddit;
   }
 
-  async createSubbreddit()
+  async createSubbreddit() {}
 }
