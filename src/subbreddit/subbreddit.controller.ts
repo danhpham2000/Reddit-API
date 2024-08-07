@@ -22,7 +22,7 @@ export class SubbredditController {
 
   @Get(':id')
   async findSubbredditById(@Param('id') id: number) {
-    return await this.subbredditService.findSubbredditByName(id);
+    return await this.subbredditService.findSubbredditById(+id);
   }
 
   @Post()
@@ -38,7 +38,7 @@ export class SubbredditController {
     @Body() updateSubbredditDto: UpdateSubbredditDto,
   ) {
     return await this.subbredditService.updateSubbreddit(
-      id,
+      +id,
       updateSubbredditDto,
     );
   }
@@ -46,6 +46,6 @@ export class SubbredditController {
   @Delete(':id')
   @HttpCode(204)
   async deleteSubbreddit(@Param('id') id: number) {
-    return await this.subbredditService.deleteSubbreddit(id);
+    return await this.subbredditService.deleteSubbreddit(+id);
   }
 }

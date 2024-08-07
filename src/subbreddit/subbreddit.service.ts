@@ -10,7 +10,7 @@ export class SubbredditService {
     return await this.prismaService.subbreddit.findMany();
   }
 
-  async findSubbredditByName(id: number): Promise<Subbreddit> {
+  async findSubbredditById(id: number): Promise<Subbreddit> {
     const subbreddit = await this.prismaService.subbreddit.findUnique({
       where: { id },
     });
