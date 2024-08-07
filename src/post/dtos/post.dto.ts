@@ -4,4 +4,7 @@ export class CreatePostDto {
   description: string;
   createdAt: Date;
   upVote: number;
+  authorId: number;
+  subbredditId: number;
+  subbreddit: string;
 }

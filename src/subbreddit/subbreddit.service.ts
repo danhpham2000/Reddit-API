@@ -10,15 +10,31 @@ export class SubbredditService {
     return await this.prismaService.subbreddit.findMany();
   }
 
-  async findSubbredditById(id: number) {
-    const subbreddit = this.prismaService.subbreddit.findUnique({
+  async findSubbredditByName(id: number): Promise<Subbreddit> {
+    const subbreddit = await this.prismaService.subbreddit.findUnique({
       where: { id },
     });
     if (!subbreddit) {
-      throw new Error('Can not find this subbreddit');
+      throw new Error('Cannot find this subbreddit with this');
     }
     return subbreddit;
   }
 
-  async createSubbreddit() {}
+  async createSubbreddit(subbreddit: Subbreddit): Promise<void> {
+    subbreddit.createdAt = new Date(Date.now());
+    await this.prismaService.subbreddit.create({
+      data: subbreddit,
+    });
+  }
+
+  async updateSubbreddit(id: number, newSubbreddit: Subbreddit): Promise<void> {
+    await this.prismaService.subbreddit.update({
+      where: { id },
+      data: newSubbreddit,
+    });
+  }
+
+  async deleteSubbreddit(id: number): Promise<void> {
+    await this.prismaService.subbreddit.delete({ where: { id } });
+  }
 }

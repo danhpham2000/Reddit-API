@@ -21,7 +21,16 @@ export class PostService {
   async createPost(newPost: Post): Promise<void> {
     newPost.upVote = 0;
     newPost.createdAt = new Date(Date.now());
-    await this.prismaService.post.create({ data: newPost });
+    const currentSubbreddit = await this.prismaService.subbreddit.findUnique({
+      where: { id: newPost.subbredditId },
+    });
+    if (!currentSubbreddit) {
+      throw new Error('There is no subbreddit with that id');
+    }
+    newPost.subbredditId = currentSubbreddit.id;
+    await this.prismaService.post.create({
+      data: newPost,
+    });
   }
 
   async updatePost(id: number, post: Post): Promise<Post> {

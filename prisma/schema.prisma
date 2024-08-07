@@ -19,7 +19,7 @@ datasource db {
 // One post belongs to 1 subreddit
 model Post {
   id          Int      @id @default(autoincrement())
-  title       String
+  title       String   @unique
   description String
   createdAt   DateTime
   upVote      Int
@@ -39,7 +39,7 @@ model User {
   name     String
   email    String
   password String
-  posts     Post[]
+  posts    Post[]
 
   subbreddit   Subbreddit? @relation(fields: [subbredditId], references: [id])
   subbredditId Int?
@@ -48,9 +48,9 @@ model User {
 // One subreddit have many users and many posts
 model Subbreddit {
   id          Int      @id @default(autoincrement())
-  title       String
+  title       String   @unique
   description String
   createdAt   DateTime
-  users        User[]
-  posts        Post[]
+  users       User[]
+  posts       Post[]
 }
