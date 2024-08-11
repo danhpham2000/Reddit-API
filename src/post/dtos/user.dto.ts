@@ -1,4 +1,4 @@
-import { IsEmail, IsNotEmpty, IsStrongPassword } from 'class-validator';
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
 export class NewUserDto {
   id: number;
@@ -10,11 +10,6 @@ export class NewUserDto {
   email: string;
 
   @IsNotEmpty()
-  @IsStrongPassword({
-    minLength: 7,
-    minUppercase: 1,
-    minNumbers: 1,
-  })
   password: string;
 
   subbredditId: number;
