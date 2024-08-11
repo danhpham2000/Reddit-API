@@ -45,9 +45,13 @@ export class PostController {
     return await this.postService.deletePost(+id);
   }
 
-  @Post(':srId/posts/:id/upvote')
+  @Post(':srId/posts/:id/:vote')
   @HttpCode(204)
-  async upvotePost(@Param('srId') srId: number, @Param('id') id: number) {
-    return await this.postService.upVotePost(+id, +srId);
+  async votePost(
+    @Param('srId') srId: number,
+    @Param('id') id: number,
+    @Param('vote') vote: string,
+  ) {
+    return await this.postService.votePost(+id, +srId, vote);
   }
 }

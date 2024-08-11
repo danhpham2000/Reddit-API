@@ -52,15 +52,20 @@ export class PostService {
     await this.prismaService.post.delete({ where: { id } });
   }
 
-  async upVotePost(srId: number, id: number) {
-    const currentPost = await this.prismaService.post.findUnique({
-      where: { id },
+  async votePost(srId: number, id: number, vote: string) {
+    const currentPost = await this.prismaService.post.findFirst({
+      where: { id: id, subbredditId: srId },
     });
-    const numVote = currentPost.upVote;
+    let numVote = currentPost.upVote;
+    if (vote === 'upvote') {
+      numVote += 1;
+    } else if (vote === 'downvote') {
+      numVote -= 1;
+    }
     await this.prismaService.post.update({
       where: { id: id, subbredditId: srId },
       data: {
-        upVote: numVote + 1,
+        upVote: numVote,
       },
     });
   }

@@ -6,5 +6,4 @@ export class CreatePostDto {
   upVote: number;
   authorId: number;
   subbredditId: number;
-  subbreddit: string;
 }

@@ -20,9 +20,9 @@ export class SubbredditController {
     return await this.subbredditService.findAllSubbreddits();
   }
 
-  @Get(':id')
-  async findSubbredditById(@Param('id') id: number) {
-    return await this.subbredditService.findSubbredditById(+id);
+  @Get(':title')
+  async findSubbredditById(@Param('title') title: string) {
+    return await this.subbredditService.findSubbredditById(title);
   }
 
   @Post()
