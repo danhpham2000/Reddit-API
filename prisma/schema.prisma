@@ -35,14 +35,13 @@ model Post {
 // One user have many posts
 // One user belongs to 1 subreddit
 model User {
-  id       Int    @id @default(autoincrement())
-  name     String
-  email    String @unique
-  password String
-  posts    Post[]
-
-  subbreddit   Subbreddit? @relation(fields: [subbredditId], references: [id])
-  subbredditId Int?
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime
+  posts Post[]
+  subbreddits   Subbreddit[] 
 }
 
 // One subreddit have many users and many posts

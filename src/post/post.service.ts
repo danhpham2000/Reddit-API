@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { Post } from '@prisma/client';
+import { SubbredditService } from 'src/subbreddit/subbreddit.service';
 
 @Injectable()
 export class PostService {
-  constructor(private prismaService: PrismaService) {}
+  constructor(
+    private prismaService: PrismaService,
+    private subbredditService: SubbredditService,
+  ) {}
 
   async findAllPosts(srId: number): Promise<Post[]> {
     return await this.prismaService.post.findMany({
@@ -25,16 +29,6 @@ export class PostService {
   async createPost(newPost: Post): Promise<void> {
     newPost.upVote = 0;
     newPost.createdAt = new Date(Date.now());
-    const currentSubbreddit = await this.prismaService.subbreddit.findUnique({
-      where: { id: newPost.subbredditId },
-    });
-    if (!currentSubbreddit) {
-      throw new Error('There is no subbreddit with that id');
-    }
-    newPost.subbredditId = currentSubbreddit.id;
-    await this.prismaService.post.create({
-      data: newPost,
-    });
   }
 
   async updatePost(id: number, post: Post): Promise<Post> {

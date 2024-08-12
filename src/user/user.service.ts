@@ -1,9 +1,4 @@
-import {
-  BadRequestException,
-  ForbiddenException,
-  Injectable,
-  Res,
-} from '@nestjs/common';
+import { ForbiddenException, Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
 import { CurrentUserDto, NewUserDto } from 'src/post/dtos';
@@ -21,6 +16,7 @@ export class UserService {
           name: newUser.name,
           email: newUser.email,
           password: hashedPassword,
+          createdAt: new Date(Date.now()),
         },
       });
     } catch (error) {
@@ -48,7 +44,7 @@ export class UserService {
       }
       return { message: 'You are logged in' };
     } catch (error) {
-      return error.message;
+      return error;
     }
   }
 }
